@@ -16,7 +16,7 @@ class DailyMail
     public static function sendDailyMail()
     {
         $users = User::all();
-        $logs = Ann::orderBy('id', 'desc')->get();
+        $logs = Ann::orderBy('id', 'desc')->first();
         $text1="";
         
         foreach ($logs as $log) {
@@ -33,10 +33,9 @@ class DailyMail
             
             if ($user->sendDailyMail==1) {
                 echo "Send daily mail to user: ".$user->id;
-                $subject = Config::get('appName')."-每日流量报告以及公告";
+                $subject = Config::get('appName')."-重要公告";
                 $to = $user->email;
-                $text = "下面是系统中目前的公告:<br><br>".$text1."<br><br>晚安！";
-                
+                $text = "下面是系统中目前的公告:<br><br>".$text1."<br><br>";
                 
                 try {
                     Mail::send($to, $subject, 'news/daily-traffic-report.tpl', [
